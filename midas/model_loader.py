@@ -26,7 +26,7 @@ default_models = {
 }
 
 
-def load_model(device, model_path, model_type="dpt_large_384", optimize=True, height=None, square=False):
+def load_model(device, model_path, model_type="dpt_large_384", optimize=True, height=None, square=False, verbose=False):
     """Load the specified network.
 
     Args:
@@ -199,9 +199,11 @@ def load_model(device, model_path, model_type="dpt_large_384", optimize=True, he
         assert False
 
     if not "openvino" in model_type:
-        print("Model loaded, number of parameters = {:.0f}M".format(sum(p.numel() for p in model.parameters()) / 1e6))
+        if verbose:
+            print("Model loaded, number of parameters = {:.0f}M".format(sum(p.numel() for p in model.parameters()) / 1e6))
     else:
-        print("Model loaded, optimized with OpenVINO")
+        if verbose:
+            print("Model loaded, optimized with OpenVINO")
 
     if "openvino" in model_type:
         keep_aspect_ratio = False
